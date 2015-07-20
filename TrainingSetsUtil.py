@@ -16,9 +16,6 @@ from nltk.tokenize import wordpunct_tokenize
 from os import listdir
 from os.path import isfile, join
 
-# high performance data type to count the number of occurrences of a term
-from collections import Counter
-
 # add path to NLTK file
 nltk.data.path = ['nltk_data']
 # load stopwords
@@ -28,42 +25,10 @@ stopwords = set(stopwords.words('english'))
 spam_path = 'data/spam/'
 easy_ham_path = 'data/easy_ham/'
 
-# constants for accessing tuple indices in training set
-FREQUENCY = 0
-FILE_COUNT = 1
-    
-
-"""
-
-Hints:
-
-# received help from http://slendermeans.org/ml4h-ch3.html for NLTK
-
-# Note, remove '=' symbols before tokenizing, since these
-# sometimes occur within words to indicate, e.g., line-wrapping.
-msg_words = set(wordpunct_tokenize(msg.replace('=\\n', '').lower()))
-
-# Get rid of stopwords
-msg_words = msg_words.difference(stopwords) 
-    
-from os import listdir
-from os.path import isfile, join
-mypath = './data'
-files_in_dir = [ f for f in listdir(mypath) if isfile(join(mypath,f)) ]
-
-for files in filepath:
-    with open(files, 'r') as f:
-        for line in f:
-            if 'Abstract' in line:                
-                for line in f: # now you are at the lines you want
-                    # do work
-"""
-
-def get_word_count(message):
+def get_words(message):
     
     """
-    Extracts all the words from the given mail and returns a dict of <term>: 
-    <number of occurrences> from it.
+    Extracts all the words from the given mail and returns it as a set.
     """
     
     # thanks http://slendermeans.org/ml4h-ch3.html
@@ -71,20 +36,39 @@ def get_word_count(message):
     # remove '=' symbols before tokenizing, since these
     # sometimes occur within words to indicate, e.g., line-wrapping
     # also remove newlines    
-    all_words = wordpunct_tokenize(message.replace('=\\n', '').lower())
+    all_words = set(wordpunct_tokenize(message.replace('=\\n', '').lower()))
     
     # remove the stopwords
     msg_words = [word for word in all_words if word not in stopwords and len(word) > 2]
     
-    # count the number of occurrences of each word
-    word_count_dict = dict(Counter(msg_words))
+    return msg_words
     
-    return word_count_dict   
+def get_mail_from_file(file_name):
+    
+    """
+    Returns the entire mail as a string from the given file.
+    """
+    
+    message = ''
+    
+    with open(file_name, 'r') as mail_file:
+        
+        for line in mail_file:
+            # the contents of the actual mail start after the first newline
+            # so find it, and then extract the words
+            if line == '\n':
+                # make a string out of the remaining lines
+                for line in mail_file:
+                    message += line
+                    
+    return message
+    
+    
     
 def make_training_set(path):
     
     """
-    Returns a dictionary of <term>: (<total_frequency>, <occurrence>) of all 
+    Returns a dictionary of <term>: <occurrence> of all 
     the terms in files contained in the directory specified by path.
     path is mainly directories to the training data for spam and ham folders.
     occurrence is the percentage of documents that have the 'term' in it.
@@ -94,7 +78,6 @@ def make_training_set(path):
     
     # initializations
     training_set = {}
-    total_frequency = 0
 
     mails_in_dir = [mail_file for mail_file in listdir(path) if isfile(join(path, mail_file))]
     
@@ -103,39 +86,39 @@ def make_training_set(path):
     # total number of files in the directory
     total_file_count = len(mails_in_dir)
     
-    
     for mail_name in mails_in_dir:
+        
         if mail_name == 'cmds':
             cmds_count += 1
             continue
-        with open(path + mail_name, 'r') as mail_file:
-            message = ''
-            for line in mail_file:
-                if line == '\n':
-                    # make a string out of the remaining lines
-                    for line in mail_file:
-                        message += line
-                    # we have the message now
-                    # get the word count
-                    term_count_dict = get_word_count(message)
+        
+        # get the message in the mail
+        message = get_mail_from_file(path + mail_name)
+        
+        # we have the message now
+        # get the words in the message
+        terms = get_words(message)
                     
-                    # add entries to the training set
-                    for term in term_count_dict.keys():
-                        if term in training_set:
-                            training_set[term] = (training_set[term][FREQUENCY] + term_count_dict[term], training_set[term][FILE_COUNT] + 1)
-                        else:
-                            training_set[term] = (term_count_dict[term], 1)
-                        total_frequency += term_count_dict[term]
+        # what we're doing is tabulating the number of files
+        # that have the word in them
+        # add these entries to the training set
+        for term in terms:
+            if term in training_set:
+                training_set[term] = training_set[term] + 1
+            else:
+                training_set[term] = 1
     
     # reducing the count of cmds files from file count
     total_file_count -= cmds_count
     # calculating the occurrence for each term
     for term in training_set.keys():
-        training_set[term] = (training_set[term][FREQUENCY], float(training_set[term][FILE_COUNT]) / total_file_count)
+        training_set[term] = float(training_set[term]) / total_file_count
                             
     return training_set
-    
+
+print ''    
 print 'Loading training sets...',
 spam_training_set = make_training_set(spam_path)
 ham_training_set = make_training_set(easy_ham_path)
 print 'done.'
+print ''
