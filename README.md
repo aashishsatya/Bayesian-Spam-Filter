@@ -1,7 +1,6 @@
 # Bayesian Spam Filter
 
-###### NOTE: Data sets haven't been included yet, will add them soon.
-###### NOTE 2: NLTK (Natural Language Toolkit) for Python is required.
+###### NOTE: NLTK (Natural Language Toolkit) for Python is required.
 
 An implementation of a Spam Filter in Python that uses the Naive Bayes Model to classify emails as spam or ham.
 
