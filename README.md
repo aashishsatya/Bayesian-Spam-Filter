@@ -6,6 +6,12 @@ An implementation of a Spam Filter in Python that uses the Naive Bayes Model to 
 
 The program uses a small portion of NLTK to tokenize and clean out the "noise" words that may appear across the text.
 
+#### Reference:
+
+The reference I used was Machine Learning for Hackers by Drew Conway and John Myles White, Chapter 3. The code is in R but should be easy to follow. 
+
+Also this was a hobby project, so I do not have any associated project report.
+
 #### Program Demo:
 
 Simply run the script 'ClassifierDemo.py' once you're in the program directory:
