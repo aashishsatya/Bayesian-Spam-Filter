@@ -10,6 +10,8 @@ The program uses a small portion of NLTK to tokenize and clean out the "noise" w
 
 The reference I used was Machine Learning for Hackers by Drew Conway and John Myles White, Chapter 3. The code is in R but should be easy to follow. 
 
+The data sets were obtained from the SpamAssassin Public Corpus, which can be found [here](http://spamassassin.apache.org/old/publiccorpus/).
+
 Also this was a hobby project, so I do not have any associated project report.
 
 #### Program Demo:
