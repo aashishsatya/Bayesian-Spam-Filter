@@ -1,6 +1,6 @@
 # Bayesian Spam Filter
 
-# NOTE: This was a hobby project, so I do not have any associated project report.
+#### NOTE: This was a hobby project, so I do not have any associated project report.
 
 ###### Dependencies: NLTK (Natural Language Toolkit) for Python.
 
