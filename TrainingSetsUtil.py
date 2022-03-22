@@ -51,7 +51,7 @@ def get_mail_from_file(file_name):
     
     message = ''
     
-    with open(file_name, 'r') as mail_file:
+    with open(file_name, 'r', encoding = 'latin1') as mail_file:
         
         for line in mail_file:
             # the contents of the actual mail start after the first newline
@@ -116,9 +116,9 @@ def make_training_set(path):
                             
     return training_set
 
-print ''    
-print 'Loading training sets...',
+print('')
+print('Loading training sets...')
 spam_training_set = make_training_set(spam_path)
 ham_training_set = make_training_set(easy_ham_path)
-print 'done.'
-print ''
+print('done.')
+print('')

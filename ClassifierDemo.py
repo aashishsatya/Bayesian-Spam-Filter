@@ -30,7 +30,7 @@ for mail_path in test_paths:
     results[SPAM] = 0
     results[HAM] = 0
     
-    print 'Running classifier on files in', mail_path[5:-1], '...'
+    print('Running classifier on files in', mail_path[5:-1], '...')
 
     for mail_name in mails_in_dir:
         
@@ -52,7 +52,6 @@ for mail_path in test_paths:
         spam_fraction = float(results[SPAM]) / total_files
         ham_fraction = 1 - spam_fraction
                 
-    print 'Fraction of spam messages =', spam_fraction
-    print 'Fraction of ham messages =', ham_fraction
-    print ''
-
+    print('Fraction of spam messages =', spam_fraction)
+    print('Fraction of ham messages =', ham_fraction)
+    print('')
