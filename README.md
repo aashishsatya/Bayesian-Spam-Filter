@@ -36,8 +36,8 @@ and you should be good to go.
 
 #### Acknowledgements
 
-Thanks Vivian Bi Fang Lim for pointing out an error when porting to Python 3. This was fixed on March 23, 2022.
+Thanks Vivian Bi Fang Lim and Qianhe Ouyang for pointing out errors/omissions after porting to Python 3.
 
-Feel free to contact me at ankarathaashish@gmail.com for suggestions for improvement or bug reports.
+Feel free to contact me at ankarathaashish@gmail.com for suggestions or bug reports.
 
 
